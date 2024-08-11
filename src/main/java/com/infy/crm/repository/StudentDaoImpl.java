@@ -9,7 +9,6 @@ import com.infy.crm.entity.Student;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
 
 
 @Repository
@@ -19,9 +18,8 @@ public class StudentDaoImpl implements StudentDao {
 	private EntityManager entityManager;
 
 	@Override
-	@Transactional
-	public void save(Student student) {
-		entityManager.persist(student);
+	public Student save(Student student) {
+		return entityManager.merge(student);
 	}
 
 	@Override
@@ -37,10 +35,10 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	@Transactional
-	public Integer delete(Integer id) {
-		int rowsDeleted = entityManager.createQuery("delete from Student where id = :id").setParameter("id", id).executeUpdate();
-		return rowsDeleted;
+	public void delete(Integer id) {
+//		int rowsDeleted = entityManager.createQuery("delete from Student where id = :id").setParameter("id", id).executeUpdate();
+		Student stud = entityManager.find(Student.class, id);
+		entityManager.remove(stud);
 	}
 
 }
