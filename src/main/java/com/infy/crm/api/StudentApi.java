@@ -43,11 +43,7 @@ public class StudentApi {
 	// Retrieve student by id
 	@GetMapping("/{id}")
 	public Student getStudentById(@PathVariable Integer id) {
-		Student stud = studentService.findStudentById(id);
-		if(stud == null) {
-			throw new StudentException("Student with id "+id+" not available", HttpStatus.NOT_FOUND);
-		}
-		return stud;
+		return studentService.findStudentById(id);
 	}
 	
 	// Retrieve all students
@@ -77,9 +73,6 @@ public class StudentApi {
 		@DeleteMapping("/{id}")
 		public ResponseEntity<ResponseBody> deleteStudentById(@PathVariable Integer id) {
 			Student stud = studentService.findStudentById(id);
-			if(stud == null) {
-				throw new StudentException("Student with id "+id+" not available", HttpStatus.NOT_FOUND);
-			}
 			ResponseBody response = new ResponseBody();
 			response.setMessage("Student deleted succesfully with id "+stud.getId());
 			response.setStatusCode(HttpStatus.OK.value());
